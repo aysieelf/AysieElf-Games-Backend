@@ -64,27 +64,27 @@ class Settings(BaseSettings):
     #   postgres://user:password@ec2-xx-xxx-xxx-xx.compute-1.amazonaws.com:5432/d123abc456def7
     DATABASE_URL: str
 
-    # JWT variables
-    JWT_SECRET_KEY: str
-    JWT_ALGORITHM: str
-    JWT_EXPIRATION: int
-    BLACKLISTED_TOKENS: list[str] = []
-
-    # Email notification variables
-    EMAIL_SENDER: str
-    EMAIL_PASSWORD: str
-    SMTP_SERVER: str
-
-    # Google OAuth variables
-    GOOGLE_CLIENT_ID: str
-    GOOGLE_CLIENT_SECRET: str
-    SECRET_KEY: str
-
-    # AWS variables for S3 bucket
-    AWS_ACCESS_KEY: str
-    AWS_SECRET_KEY: str
-    AWS_BUCKET_NAME: str
-    AWS_REGION: str
+    # # JWT variables
+    # JWT_SECRET_KEY: str
+    # JWT_ALGORITHM: str
+    # JWT_EXPIRATION: int
+    # BLACKLISTED_TOKENS: list[str] = []
+    #
+    # # Email notification variables
+    # EMAIL_SENDER: str
+    # EMAIL_PASSWORD: str
+    # SMTP_SERVER: str
+    #
+    # # Google OAuth variables
+    # GOOGLE_CLIENT_ID: str
+    # GOOGLE_CLIENT_SECRET: str
+    # SECRET_KEY: str
+    #
+    # # AWS variables for S3 bucket
+    # AWS_ACCESS_KEY: str
+    # AWS_SECRET_KEY: str
+    # AWS_BUCKET_NAME: str
+    # AWS_REGION: str
 
     @field_validator("DATABASE_URL", check_fields=False)
     def normalize_database_url(cls, v: str) -> str:
