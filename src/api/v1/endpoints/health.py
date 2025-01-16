@@ -1,10 +1,10 @@
 from datetime import UTC, datetime
 
 from database.session import engine
-from sqlalchemy import text
 from src.core.config import settings
 
 from fastapi import APIRouter
+from sqlalchemy import text
 
 router = APIRouter()
 
