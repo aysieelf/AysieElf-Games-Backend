@@ -1,0 +1,26 @@
+[project]
+name = "AysieElf-Games"
+version = "0.1.0"
+description = "Web platform for cozy pixel art games, built with FastAPI and React"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+]
+
+[tool.ruff]
+select = ["E", "F", "I", "C"]
+line-length = 88
+fix = true
+extend-select = ["E301", "E302", "E303", "E305"]
+exclude = ["migrations", ".venv", "__pycache__"]
+
+
+[tool.ruff.isort]
+known-first-party = ["aysieelf_games"]
+default-section = "THIRDPARTY"
+force-sort-within-sections = true
+combine-as-imports = true
+
+[tool.black]
+line-length = 88
+target-version = ["py312"]
