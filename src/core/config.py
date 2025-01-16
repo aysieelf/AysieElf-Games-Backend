@@ -33,7 +33,10 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "AysieElf Games"
 
     # Domains allowed to make requests
-    CORS_ALLOWED_HOSTS: list[str] = ["*"]
+    CORS_ALLOWED_HOSTS: list[str] = [
+        "https://aysieelf-games-frontend-7d161a22345f.herokuapp.com/",
+        "http://localhost:3000",
+    ]
 
     # Development mode / Production mode
     DEBUG: bool = os.getenv("DEBUG", "false").lower() in ["true", "1"]
