@@ -45,7 +45,7 @@ Welcome to the backend repository of AysieElf Games! This is the engine that pow
    ```
 
 ## 📊 Backend Progress
-[▓░░░░░░░░░░░░░░░░░░░] (3%) 2/63
+[▓░░░░░░░░░░░░░░░░░░░] (5%) 3/55
 
 ## 📝 API Documentation
 API documentation is available at `/docs` endpoint. You can also view it [here](https://aysieelf-games-api-c2eb044503c3.herokuapp.com/docs).
