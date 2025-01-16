@@ -1,9 +1,9 @@
 from datetime import UTC, datetime
 
-from fastapi import APIRouter
-
 from database.session import engine
 from src.core.config import settings
+
+from fastapi import APIRouter
 
 router = APIRouter()
 
@@ -27,4 +27,4 @@ async def health_check():
             "environment": "development" if settings.DEBUG else "production",
             "database": str(e),
             "timestamp": datetime.now(UTC).isoformat(),
-       }
+        }
