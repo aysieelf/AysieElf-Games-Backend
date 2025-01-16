@@ -1,6 +1,7 @@
 from datetime import UTC, datetime
 
 from database.session import engine
+from sqlalchemy import text
 from src.core.config import settings
 
 from fastapi import APIRouter
@@ -12,7 +13,7 @@ router = APIRouter()
 async def health_check():
     try:
         with engine.connect() as connection:
-            connection.execute("SELECT 1")
+            connection.execute(text("SELECT 1"))
         return {
             "status": "healthy",
             "service": settings.PROJECT_NAME,
