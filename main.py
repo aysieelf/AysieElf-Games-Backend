@@ -1,9 +1,10 @@
 from contextlib import asynccontextmanager
 
 from database.session import init_db
-from fastapi import APIRouter, FastAPI
 from src.api.v1.routes import api_router
 from src.core.config import Settings, settings
+
+from fastapi import APIRouter, FastAPI
 from starlette.middleware.cors import CORSMiddleware
 import uvicorn
 

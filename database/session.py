@@ -1,7 +1,8 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from src.core.config import settings
 from src.models.base import Base
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 # engine is the connection between backend and database
 engine = create_engine(
