@@ -2,6 +2,8 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
+from src.schemas.game import GameReadAll
+
 
 # Base configs
 class BaseConfig(BaseModel):
@@ -14,3 +16,6 @@ class CategoryCreate(BaseConfig):
 class CategoryReadAll(BaseConfig):
     name: str
     description: Optional[str]
+
+class CategoryReadSingle(CategoryReadAll):
+    games: list[GameReadAll]
