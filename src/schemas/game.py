@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field
 class BaseConfig(BaseModel):
     model_config = {"from_attributes": True}
 
+
 class GameCreate(BaseConfig):
     title: str
     icon: Optional[str] = None
