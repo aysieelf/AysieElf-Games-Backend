@@ -11,7 +11,11 @@ class BaseConfig(BaseModel):
     model_config = {"from_attributes": True}
 
 class CategoryCreate(BaseConfig):
-
+    name: str = Field(
+        min_length=5,
+        max_length=50,
+        examples=["Example Category"],
+    )
     description: Optional[str] = None
 
 class CategoryReadAll(BaseConfig):
