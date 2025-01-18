@@ -20,4 +20,20 @@ class UserCreate(BaseConfig):
     email: EmailStr
     password: str = Field(min_length=4, max_length=36, examples=["Example123@"])
     role: Roles = Roles.USER
-    avatar: Optional[str]
+    avatar: Optional[str] = None
+
+    @field_validator("password")
+    def validate_password(cls, value):
+        if not (
+                any(c.isupper() for c in value)
+                and any(c.islower() for c in value)
+                and any(c.isdigit() for c in value)
+                and not any(c.isspace() for c in value)
+        ):
+            raise ValueError(
+                "Password must contain at least "
+                "one uppercase letter, one lowercase letter, "
+                "one number, and must not contain any spaces"
+            )
+        return value
+
