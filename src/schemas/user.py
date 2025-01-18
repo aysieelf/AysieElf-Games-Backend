@@ -1,14 +1,16 @@
 from datetime import datetime
 from typing import Optional
 from uuid import UUID
-from pydantic import BaseModel, Field, EmailStr, field_validator
 
 from src.models.enums import Roles
+
+from pydantic import BaseModel, EmailStr, Field, field_validator
 
 
 # Base configs
 class BaseConfig(BaseModel):
     model_config = {"from_attributes": True}
+
 
 class UserCreate(BaseConfig):
     username: str = Field(
@@ -25,10 +27,10 @@ class UserCreate(BaseConfig):
     @field_validator("password")
     def validate_password(cls, value):
         if not (
-                any(c.isupper() for c in value)
-                and any(c.islower() for c in value)
-                and any(c.isdigit() for c in value)
-                and not any(c.isspace() for c in value)
+            any(c.isupper() for c in value)
+            and any(c.islower() for c in value)
+            and any(c.isdigit() for c in value)
+            and not any(c.isspace() for c in value)
         ):
             raise ValueError(
                 "Password must contain at least "
@@ -36,6 +38,7 @@ class UserCreate(BaseConfig):
                 "one number, and must not contain any spaces"
             )
         return value
+
 
 class UserReadAll(BaseConfig):
     id: UUID
@@ -58,4 +61,3 @@ class UserUpdate(BaseConfig):
     password: Optional[str]
     role: Optional[Roles]
     avatar: Optional[str]
-
