@@ -31,6 +31,7 @@ class GameReadSingle(GameReadAll):
     is_multiplayer: bool
     created_at: datetime
     favorites: int
+    upvotes: int
 
 
 class GameUpdate(BaseConfig):
