@@ -42,7 +42,6 @@ CREATE TABLE friendships (
     user2_id UUID REFERENCES users(id),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (user1_id, user2_id),
-    CHECK (user1_id < friendships.user2_id)
 );
 
 CREATE TABLE upvotes (
@@ -78,3 +77,6 @@ CREATE INDEX idx_game_activities_played_at ON game_activities(played_at DESC);
 -- Composite indexes for frequent queries
 CREATE INDEX idx_favorites_user_added ON favorites(user_id, added_at DESC);
 CREATE INDEX idx_upvotes_game_count ON upvotes(game_id, created_at DESC);
+
+-- Category indexes
+CREATE INDEX idx_categories_name ON categories(name);
