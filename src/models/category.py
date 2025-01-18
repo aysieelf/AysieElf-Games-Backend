@@ -2,7 +2,7 @@ import re
 
 from src.models.base import Base
 
-from sqlalchemy import Column, UUID, String, Text, event
+from sqlalchemy import UUID, Column, String, Text, event
 from sqlalchemy.orm import relationship
 
 

@@ -39,11 +39,13 @@ class UserCreate(BaseConfig):
             )
         return value
 
+
 class UserReadFriends(BaseConfig):
     id: UUID
     username: str
     slug: str
     avatar: Optional[str]
+
 
 class UserReadAll(BaseConfig):
     id: UUID

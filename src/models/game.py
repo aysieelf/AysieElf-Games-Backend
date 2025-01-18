@@ -2,7 +2,7 @@ import re
 
 from src.models.base import Base
 
-from sqlalchemy import UUID, Boolean, Column, TIMESTAMP, ForeignKey, String, Text, event
+from sqlalchemy import TIMESTAMP, UUID, Boolean, Column, ForeignKey, String, Text, event
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
