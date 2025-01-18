@@ -50,3 +50,12 @@ class UserReadSingle(UserReadAll):
     favorite_games: list  # TODO
     friends: list[UserReadAll]  # TODO
     activity: list  # TODO
+
+
+class UserUpdate(BaseConfig):
+    username: Optional[str]
+    email: Optional[str]
+    password: Optional[str]
+    role: Optional[Roles]
+    avatar: Optional[str]
+
