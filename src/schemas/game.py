@@ -16,6 +16,7 @@ class GameCreate(BaseConfig):
     is_multiplayer: bool = False
     category_id: UUID
 
+
 class GameReadAll(BaseConfig):
     id: UUID
     title: str
@@ -23,3 +24,9 @@ class GameReadAll(BaseConfig):
     description: Optional[str]
     category_slug: str = Field(alias="category.slug")
     category_title: str = Field(alias="category.title")
+
+
+class GameReadSingle(GameReadAll):
+    is_multiplayer: bool
+    created_at: datetime
+    favorites: int
