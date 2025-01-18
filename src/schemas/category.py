@@ -19,3 +19,7 @@ class CategoryReadAll(BaseConfig):
 
 class CategoryReadSingle(CategoryReadAll):
     games: list[GameReadAll]
+
+class CategoryUpdate(BaseConfig):
+    name: Optional[str] = None
+    description: Optional[str] = None
