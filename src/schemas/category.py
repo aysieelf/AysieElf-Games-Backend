@@ -10,3 +10,7 @@ class BaseConfig(BaseModel):
 class CategoryCreate(BaseConfig):
     name: str
     description: Optional[str] = None
+
+class CategoryReadAll(BaseConfig):
+    name: str
+    description: Optional[str]
