@@ -30,3 +30,11 @@ class GameReadSingle(GameReadAll):
     is_multiplayer: bool
     created_at: datetime
     favorites: int
+
+
+class GameUpdate(BaseConfig):
+    title: Optional[str] = None
+    icon: Optional[str] = None
+    description: Optional[str] = None
+    is_multiplayer: Optional[bool] = None
+    category_title: Optional[str] = None
