@@ -3,9 +3,12 @@ import re
 from src.models.base import Base
 from src.models.enums import Roles
 
-from sqlalchemy import Boolean, Column, DateTime, Enum, String, event
+from sqlalchemy import Boolean, Column, TIMESTAMP, Enum, String, event
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
+from  sqlalchemy.orm import  relationship
+
+from src.models.friendship import Friendship
 
 
 class User(Base):
@@ -21,12 +24,20 @@ class User(Base):
     role = Column(Enum(Roles), nullable=False, default=Roles.USER)
     avatar = Column(String(255), nullable=True)
     created_at = Column(
-        DateTime(timezone=True),
+        TIMESTAMP(timezone=True),
         server_default=func.now(),
         nullable=False,
     )  # can be used for future achievements and badges
-    last_login = Column(DateTime(timezone=True), nullable=True)
+    last_login = Column(TIMESTAMP(timezone=True), nullable=True)
     is_verified = Column(Boolean, nullable=False, default=False)
+
+    friends_as_user1 = relationship("Friendship", foreign_keys=[Friendship.user1_id], back_populates="user1")
+    friends_as_user2 = relationship("Friendship", foreign_keys=[Friendship.user2_id], back_populates="user2")
+
+    @property
+    def friends(self):
+        """Get all friends regardless of user1/user2 position"""
+        return [f.user2 for f in self.friends_as_user1] + [f.user1 for f in self.friends_as_user2]
 
     @staticmethod
     def generate_slug(username: str) -> str:
