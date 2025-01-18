@@ -1,25 +1,36 @@
+import re
+from sqlalchemy import Boolean, Column, DateTime, Enum, String, event
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.sql import func
 
 from src.models.base import Base
 from src.models.enums import Roles
-
-from sqlalchemy import Boolean, Column, DateTime, Enum, String
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.sql import func
 
 
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(UUID, primary_key=True, index=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, index=True)
     username = Column(String(50), unique=True, nullable=False, index=True)
+    slug = Column(String(50), unique=True, nullable=False, index=True)
     email = Column(String(320), unique=True, nullable=False, index=True)
     password_hash = Column(
         String(60), nullable=False
     )  # bcrypt hashed password is 60 characters long
     role = Column(Enum(Roles), nullable=False, default=Roles.USER)
-    avatar = Column(String(2048), nullable=True)
+    avatar = Column(String(255), nullable=True)
     created_at = Column(
-        DateTime(timezone=True), server_default=func.now()
+        DateTime(timezone=True), server_default=func.now(), nullable=False,
     )  # can be used for future achievements and badges
     last_login = Column(DateTime(timezone=True), nullable=True)
     is_verified = Column(Boolean, nullable=False, default=False)
+
+    @staticmethod
+    def generate_slug(username: str) -> str:
+        """Generate URL-friendly slug from username."""
+        return re.sub(r'[^a-z0-9]+', '-', username.lower()).strip('-')
+
+# SQLAlchemy event listener to automatically generate slug before insert
+@event.listens_for(User, 'before_insert')
+def set_slug(mapper, connection, target):
+    target.slug = User.generate_slug(target.username)
