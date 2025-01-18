@@ -3,9 +3,10 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     username VARCHAR(50) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    avatar VARCHAR(255),
-    password_hash VARCHAR(255) NOT NULL,
+    email VARCHAR(320) NOT NULL UNIQUE,
+    role ENUM(Role) NOT NULL DEFAULT Role.USER, # TODO: is this the right syntax?
+    avatar VARCHAR(255) DEFAULT NULL, # TODO: is this the right syntax?
+    password_hash VARCHAR(255) NOT NULL, # TODO: check how long should it be
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMP WITH TIME ZONE
 );
