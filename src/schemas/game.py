@@ -21,6 +21,7 @@ class GameCreate(BaseConfig):
 class GameReadAll(BaseConfig):
     id: UUID
     title: str
+    slug: str
     icon: Optional[str]
     description: Optional[str]
     category_slug: str = Field(alias="category.slug")
