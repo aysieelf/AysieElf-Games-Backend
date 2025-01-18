@@ -15,3 +15,11 @@ class GameCreate(BaseConfig):
     description: Optional[str] = None
     is_multiplayer: bool = False
     category_id: UUID
+
+class GameReadAll(BaseConfig):
+    id: UUID
+    title: str
+    icon: Optional[str]
+    description: Optional[str]
+    category_slug: str = Field(alias="category.slug")
+    category_title: str = Field(alias="category.title")
