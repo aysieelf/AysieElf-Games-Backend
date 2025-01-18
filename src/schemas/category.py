@@ -1,4 +1,5 @@
 from typing import Optional
+from uuid import UUID
 
 from pydantic import BaseModel, Field
 
@@ -10,11 +11,13 @@ class BaseConfig(BaseModel):
     model_config = {"from_attributes": True}
 
 class CategoryCreate(BaseConfig):
-    name: str
+
     description: Optional[str] = None
 
 class CategoryReadAll(BaseConfig):
+    id: UUID
     name: str
+    slug: str
     description: Optional[str]
 
 class CategoryReadSingle(CategoryReadAll):
