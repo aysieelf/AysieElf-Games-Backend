@@ -43,6 +43,7 @@ class UserCreate(BaseConfig):
 class UserReadAll(BaseConfig):
     id: UUID
     username: str
+    slug: str
     email: str
     role: Roles
     avatar: Optional[str]
