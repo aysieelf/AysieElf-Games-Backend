@@ -7,7 +7,7 @@ CREATE TABLE users (
     username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(320) NOT NULL UNIQUE,
     role roles NOT NULL DEFAULT 'user',
-    avatar VARCHAR(2048) DEFAULT NULL,
+    avatar VARCHAR(255) DEFAULT NULL,
     password_hash VARCHAR(60) NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMP WITH TIME ZONE
@@ -22,10 +22,12 @@ CREATE TABLE categories (
 CREATE TABLE games (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     title VARCHAR(100) NOT NULL UNIQUE,
+    slug VARCHAR(100) NOT NULL UNIQUE,
+    icon VARCHAR(255) NOT NULL,
     description TEXT,
     category_id UUID REFERENCES categories(id),
     is_multiplayer BOOLEAN DEFAULT false,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 );
 
 CREATE TABLE favorites (
@@ -65,6 +67,7 @@ CREATE INDEX idx_users_email ON users(email);
 
 -- Games indexes
 CREATE INDEX idx_games_title ON games(title);
+CREATE INDEX idx_games_slug ON games(slug);
 CREATE INDEX idx_games_category_id ON games(category_id);
 CREATE INDEX idx_games_is_multiplayer ON games(is_multiplayer);
 
