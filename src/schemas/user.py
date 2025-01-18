@@ -37,3 +37,10 @@ class UserCreate(BaseConfig):
             )
         return value
 
+    class UserReadAll(BaseConfig):
+        id: UUID
+        username: str
+        email: str
+        role: Roles
+        avatar: Optional[str]
+        last_login: Optional[datetime]
