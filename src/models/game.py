@@ -2,7 +2,7 @@ import re
 
 from src.models.base import Base
 
-from sqlalchemy import UUID, Boolean, Column, DateTime, ForeignKey, String, Text, event
+from sqlalchemy import UUID, Boolean, Column, TIMESTAMP, ForeignKey, String, Text, event
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -17,7 +17,7 @@ class Game(Base):
     description = Column(Text, nullable=True)
     is_multiplayer = Column(Boolean, nullable=False, default=False, index=True)
     created_at = Column(
-        DateTime(timezone=True), server_default=func.now(), nullable=False
+        TIMESTAMP(timezone=True), server_default=func.now(), nullable=False
     )
 
     category_id = Column(
