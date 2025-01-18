@@ -1,3 +1,5 @@
+from operator import index
+
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy import Column, String, Enum, DateTime, Boolean
 from sqlalchemy.sql import func
@@ -9,8 +11,8 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(UUID, primary_key=True, index=True)
-    username = Column(String(50), unique=True, nullable=False)
-    email = Column(String(320), unique=True, nullable=False)
+    username = Column(String(50), unique=True, nullable=False, index=True)
+    email = Column(String(320), unique=True, nullable=False, index=True)
     password_hash = Column(String(60), nullable=False) # bcrypt hashed password is 60 characters long
     role = Column(Enum(Roles), nullable=False, default=Roles.USER)
     avatar = Column(String(2048), nullable=True)
