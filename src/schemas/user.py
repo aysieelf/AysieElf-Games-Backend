@@ -39,6 +39,11 @@ class UserCreate(BaseConfig):
             )
         return value
 
+class UserReadFriends(BaseConfig):
+    id: UUID
+    username: str
+    slug: str
+    avatar: Optional[str]
 
 class UserReadAll(BaseConfig):
     id: UUID
@@ -52,7 +57,7 @@ class UserReadAll(BaseConfig):
 
 class UserReadSingle(UserReadAll):
     favorite_games: list  # TODO
-    friends: list[UserReadAll]  # TODO
+    friends: list[UserReadFriends]
     activity: list  # TODO
 
 
