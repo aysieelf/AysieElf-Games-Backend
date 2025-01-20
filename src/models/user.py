@@ -13,7 +13,7 @@ from sqlalchemy.sql import func
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, index=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, index=True, server_default=func.uuid_generate_v4())
     username = Column(String(50), unique=True, nullable=False, index=True)
     slug = Column(String(50), unique=True, nullable=False, index=True)
     email = Column(String(320), unique=True, nullable=False, index=True)
@@ -36,6 +36,7 @@ class User(Base):
     friends_as_user2 = relationship(
         "Friendship", foreign_keys=[Friendship.user2_id], back_populates="user2"
     )
+    game_activities = relationship("GameActivity", back_populates="user")
 
     @property
     def friends(self):
