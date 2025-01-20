@@ -45,10 +45,10 @@ CREATE TABLE friendships (
 );
 
 CREATE TABLE upvotes (
-    user1_id UUID REFERENCES users(id),
+    user_id UUID REFERENCES users(id),
     game_id UUID REFERENCES games(id),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (user1_id, game_id)
+    PRIMARY KEY (user_id, game_id)
 );
 
 CREATE TABLE game_activities (
@@ -70,9 +70,8 @@ CREATE INDEX idx_games_slug ON games(slug);
 CREATE INDEX idx_games_category_id ON games(category_id);
 CREATE INDEX idx_games_is_multiplayer ON games(is_multiplayer);
 
--- Activities indexes
+-- Game Activities indexes
 CREATE INDEX idx_game_activities_user_game ON game_activities(user_id, game_id);
-CREATE INDEX idx_game_activities_played_at ON game_activities(played_at DESC);
 
 -- Composite indexes for frequent queries
 CREATE INDEX idx_favorites_user_added ON favorites(user_id, added_at DESC);
