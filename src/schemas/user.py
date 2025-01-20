@@ -6,6 +6,9 @@ from src.models.enums import Roles
 
 from pydantic import BaseModel, EmailStr, Field, field_validator
 
+from src.schemas.game import GameReadAll
+from src.schemas.game_activity import GameActivityRead
+
 
 # Base configs
 class BaseConfig(BaseModel):
@@ -58,14 +61,36 @@ class UserReadAll(BaseConfig):
 
 
 class UserReadSingle(UserReadAll):
-    favorite_games: list  # TODO
+    favorite_games: list[GameReadAll]
     friends: list[UserReadFriends]
-    activity: list  # TODO
+    game_activities: list[GameActivityRead]
 
 
 class UserUpdate(BaseConfig):
-    username: Optional[str]
-    email: Optional[str]
-    password: Optional[str]
-    role: Optional[Roles]
-    avatar: Optional[str]
+    username: Optional[str] = Field(
+        None,
+        min_length=5,
+        max_length=15,
+        pattern="^[a-zA-Z0-9_-]+$",
+    )
+    email: Optional[EmailStr] = None
+    password: Optional[str] = Field(None, min_length=4, max_length=36)
+    role: Optional[Roles] = None
+    avatar: Optional[str] = None
+
+    @field_validator("password")
+    def validate_password(cls, value):
+        if value is None:
+            return value
+        if not (
+            any(c.isupper() for c in value)
+            and any(c.islower() for c in value)
+            and any(c.isdigit() for c in value)
+            and not any(c.isspace() for c in value)
+        ):
+            raise ValueError(
+                "Password must contain at least "
+                "one uppercase letter, one lowercase letter, "
+                "one number, and must not contain any spaces"
+            )
+        return value
