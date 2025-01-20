@@ -12,9 +12,5 @@ class Upvote(Base):
     game_id = Column(UUID(as_uuid=True), ForeignKey("games.id"), primary_key=True)
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
 
-    user = relationship(
-        "User", back_populates="upvotes"
-    )
-    game = relationship(
-        "Game", back_populates="upvotes"
-    )
+    user = relationship("User", back_populates="upvotes")
+    game = relationship("Game", back_populates="upvotes")

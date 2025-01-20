@@ -12,9 +12,5 @@ class Favorite(Base):
     game_id = Column(UUID(as_uuid=True), ForeignKey("games.id"), primary_key=True)
     added_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
 
-    user = relationship(
-        "User", back_populates="favorites"
-    )
-    game = relationship(
-        "Game", back_populates="favorites"
-    )
+    user = relationship("User", back_populates="favorites")
+    game = relationship("Game", back_populates="favorites")
