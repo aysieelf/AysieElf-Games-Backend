@@ -6,6 +6,13 @@ import os
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from src.models.base import Base
+from src.models.user import User
+from src.models.game import Game
+from src.models.category import Category
+from src.models.favorite import Favorite
+from src.models.upvote import Upvote
+from src.models.friendship import Friendship
+from src.models.game_activity import GameActivity
 
 target_metadata = Base.metadata
 
