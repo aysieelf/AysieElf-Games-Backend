@@ -244,3 +244,6 @@ fabric.properties
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Alembic
+alembic.ini.local
