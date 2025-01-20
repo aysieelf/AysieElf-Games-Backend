@@ -6,7 +6,22 @@ from sqlalchemy import pool
 from alembic import context
 
 from src.models.base import Base
+import os
+from sqlalchemy import engine_from_config
+from sqlalchemy import pool
 
+def get_url():
+    DATABASE_URL = os.getenv("DATABASE_URL")
+    if DATABASE_URL:
+        if DATABASE_URL.startswith("postgres://"):
+            DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+        return DATABASE_URL
+    return "postgresql://user:password@localhost/dbname"
+
+config = context.config
+
+# override-ваме URL-а от config с този от environment
+config.set_main_option("sqlalchemy.url", get_url())
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
