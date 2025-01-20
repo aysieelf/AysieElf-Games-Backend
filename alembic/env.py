@@ -2,9 +2,6 @@ from logging.config import fileConfig
 import os
 
 from alembic import context
-import os
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
 from src.models.base import Base
 from src.models.user import User
 from src.models.game import Game
@@ -14,7 +11,10 @@ from src.models.upvote import Upvote
 from src.models.friendship import Friendship
 from src.models.game_activity import GameActivity
 
+from sqlalchemy import engine_from_config, pool
+
 target_metadata = Base.metadata
+
 
 def get_url():
     DATABASE_URL = os.getenv("DATABASE_URL")
@@ -23,6 +23,8 @@ def get_url():
             DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
         return DATABASE_URL
     return "postgresql://postgres:postgres@localhost/aysieelf"
+
+
 config = context.config
 config.set_main_option("sqlalchemy.url", get_url())
 
