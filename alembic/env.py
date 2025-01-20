@@ -16,7 +16,6 @@ def get_url():
     return "postgresql://user:password@localhost/dbname"
 
 
-
 config = context.config
 
 config.set_main_option("sqlalchemy.url", get_url())
