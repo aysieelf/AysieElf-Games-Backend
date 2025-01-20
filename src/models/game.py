@@ -31,6 +31,7 @@ class Game(Base):
     category = relationship("Category", back_populates="games")
     game_activities = relationship("GameActivity", back_populates="game")
     upvotes = relationship("Upvote", back_populates="game")
+    favorites = relationship("Favorite", back_populates="game")
 
     @staticmethod
     def generate_slug(title: str) -> str:
