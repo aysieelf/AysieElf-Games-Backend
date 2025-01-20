@@ -3,11 +3,10 @@ from typing import Optional
 from uuid import UUID
 
 from src.models.enums import Roles
-
-from pydantic import BaseModel, EmailStr, Field, field_validator
-
 from src.schemas.game import GameReadAll
 from src.schemas.game_activity import GameActivityRead
+
+from pydantic import BaseModel, EmailStr, Field, field_validator
 
 
 # Base configs

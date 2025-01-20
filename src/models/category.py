@@ -10,7 +10,12 @@ from sqlalchemy.sql import func
 class Category(Base):
     __tablename__ = "categories"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, index=True, server_default=func.uuid_generate_v4())
+    id = Column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        index=True,
+        server_default=func.uuid_generate_v4(),
+    )
     name = Column(String(50), nullable=False, unique=True, index=True)
     slug = Column(String(50), nullable=False, unique=True, index=True)
     description = Column(Text, nullable=True)

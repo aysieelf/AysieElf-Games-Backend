@@ -13,7 +13,12 @@ from sqlalchemy.sql import func
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, index=True, server_default=func.uuid_generate_v4())
+    id = Column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        index=True,
+        server_default=func.uuid_generate_v4(),
+    )
     username = Column(String(50), unique=True, nullable=False, index=True)
     slug = Column(String(50), unique=True, nullable=False, index=True)
     email = Column(String(320), unique=True, nullable=False, index=True)

@@ -10,7 +10,12 @@ from sqlalchemy.sql import func
 class Game(Base):
     __tablename__ = "games"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, index=True, server_default=func.uuid_generate_v4())
+    id = Column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        index=True,
+        server_default=func.uuid_generate_v4(),
+    )
     title = Column(String(100), nullable=False, unique=True, index=True)
     slug = Column(String(100), nullable=False, unique=True, index=True)
     icon = Column(String(255), nullable=True)

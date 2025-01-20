@@ -3,6 +3,7 @@ from uuid import UUID
 
 from pydantic import BaseModel
 
+
 # Base configs
 class BaseConfig(BaseModel):
     model_config = {"from_attributes": True}
