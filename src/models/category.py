@@ -4,6 +4,7 @@ from src.models.base import Base
 
 from sqlalchemy import UUID, Column, String, Text, event
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 
 
 class Category(Base):
