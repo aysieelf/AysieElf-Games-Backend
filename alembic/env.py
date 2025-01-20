@@ -1,10 +1,11 @@
 from logging.config import fileConfig
+import os
 
 from alembic import context
 from src.models.base import Base
-import os
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+
+from sqlalchemy import engine_from_config, pool
+
 
 def get_url():
     DATABASE_URL = os.getenv("DATABASE_URL")
@@ -14,7 +15,7 @@ def get_url():
         return DATABASE_URL
     return "postgresql://user:password@localhost/dbname"
 
-from sqlalchemy import engine_from_config, pool
+
 
 config = context.config
 
