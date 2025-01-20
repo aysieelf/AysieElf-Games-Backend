@@ -43,6 +43,7 @@ class User(Base):
     )
     game_activities = relationship("GameActivity", back_populates="user")
     upvotes = relationship("Upvote", back_populates="user")
+    favorites = relationship("Favorite", back_populates="user")
 
     @property
     def friends(self):
