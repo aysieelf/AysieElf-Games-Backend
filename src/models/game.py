@@ -10,7 +10,7 @@ from sqlalchemy.sql import func
 class Game(Base):
     __tablename__ = "games"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, index=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, index=True, server_default=func.uuid_generate_v4())
     title = Column(String(100), nullable=False, unique=True, index=True)
     slug = Column(String(100), nullable=False, unique=True, index=True)
     icon = Column(String(255), nullable=True)
@@ -21,9 +21,10 @@ class Game(Base):
     )
 
     category_id = Column(
-        UUID(as_uuid=True), ForeignKey("category.id"), nullable=False, index=True
+        UUID(as_uuid=True), ForeignKey("categories.id"), nullable=False, index=True
     )
     category = relationship("Category", back_populates="games")
+    game_activities = relationship("GameActivity", back_populates="game")
 
     @staticmethod
     def generate_slug(title: str) -> str:
