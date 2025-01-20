@@ -42,6 +42,7 @@ class User(Base):
         "Friendship", foreign_keys=[Friendship.user2_id], back_populates="user2"
     )
     game_activities = relationship("GameActivity", back_populates="user")
+    upvotes = relationship("Upvote", back_populates="user")
 
     @property
     def friends(self):
