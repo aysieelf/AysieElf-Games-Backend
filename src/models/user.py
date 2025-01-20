@@ -1,7 +1,7 @@
 import re
 
 from src.models.base import Base
-from src.models.enums import Roles
+from src.models.enums import Role
 from src.models.friendship import Friendship
 
 from sqlalchemy import TIMESTAMP, Boolean, Column, Enum, String, event
@@ -25,7 +25,7 @@ class User(Base):
     password_hash = Column(
         String(60), nullable=False
     )  # bcrypt hashed password is 60 characters long
-    role = Column(Enum(Roles), nullable=False, default=Roles.USER)
+    role = Column(Enum(Role), nullable=False, default=Role.USER)
     avatar = Column(String(255), nullable=True)
     created_at = Column(
         TIMESTAMP(timezone=True),
