@@ -2,17 +2,17 @@ from logging.config import fileConfig
 import os
 
 from alembic import context
-
 from src.core.config import settings
+
 # ruff: noqa: F401
 from src.models.base import Base
+from src.models.category import Category
 from src.models.favorite import Favorite
 from src.models.friendship import Friendship
 from src.models.game import Game
 from src.models.game_activity import GameActivity
 from src.models.upvote import Upvote
 from src.models.user import User
-from src.models.category import Category
 
 from sqlalchemy import engine_from_config, pool
 
@@ -74,6 +74,7 @@ def run_migrations_online():
         url=settings.DATABASE_URL,
         poolclass=pool.NullPool,
     )
+
 
 if context.is_offline_mode():
     run_migrations_offline()
