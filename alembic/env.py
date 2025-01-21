@@ -3,6 +3,7 @@ import os
 
 from alembic import context
 
+from src.core.config import settings
 # ruff: noqa: F401
 from src.models.base import Base
 from src.models.favorite import Favorite
@@ -11,6 +12,7 @@ from src.models.game import Game
 from src.models.game_activity import GameActivity
 from src.models.upvote import Upvote
 from src.models.user import User
+from src.models.category import Category
 
 from sqlalchemy import engine_from_config, pool
 
@@ -18,12 +20,7 @@ target_metadata = Base.metadata
 
 
 def get_url():
-    DATABASE_URL = os.getenv("DATABASE_URL")
-    if DATABASE_URL:
-        if DATABASE_URL.startswith("postgres://"):
-            DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-        return DATABASE_URL
-    return "postgresql://postgres:postgres@localhost/aysieelf"
+    return settings.DATABASE_URL
 
 
 config = context.config
@@ -70,25 +67,13 @@ def run_migrations_offline() -> None:
         context.run_migrations()
 
 
-def run_migrations_online() -> None:
-    """Run migrations in 'online' mode.
-
-    In this scenario we need to create an Engine
-    and associate a connection with the context.
-
-    """
+def run_migrations_online():
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
+        config.get_section(config.config_ini_section),
         prefix="sqlalchemy.",
+        url=settings.DATABASE_URL,
         poolclass=pool.NullPool,
     )
-
-    with connectable.connect() as connection:
-        context.configure(connection=connection, target_metadata=target_metadata)
-
-        with context.begin_transaction():
-            context.run_migrations()
-
 
 if context.is_offline_mode():
     run_migrations_offline()
