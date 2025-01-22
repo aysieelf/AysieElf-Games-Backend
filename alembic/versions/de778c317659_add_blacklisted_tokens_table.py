@@ -16,8 +16,12 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    pass
-
+    op.create_table(
+        'blacklisted_tokens',
+        sa.Column('token', sa.String, primary_key=True, index=True),
+        sa.Column('blacklisted_at', sa.TIMESTAMP(timezone=True), server_default=sa.func.now(), nullable=False),
+        sa.Column('expires_at', sa.TIMESTAMP(timezone=True), nullable=False),
+    )
 
 def downgrade() -> None:
-    pass
+    op.drop_table('blacklisted_tokens')
