@@ -6,6 +6,5 @@ npm run dev
 
 
 # When changing the database models
-alembic revision --autogenerate -m "description of change"
-alembic upgrade head - this will upgrade the database tables
-alembic downgrade -1 - this will revert the last upgrade
+atlas migrate diff new_changes --env postgresql
+atlas migrate apply --env postgresql --allow-dirty
