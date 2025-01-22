@@ -13,6 +13,7 @@ from src.models.game import Game
 from src.models.game_activity import GameActivity
 from src.models.upvote import Upvote
 from src.models.user import User
+from src.models.blacklisted_token import BlacklistedToken
 
 from sqlalchemy import engine_from_config, pool
 
