@@ -67,12 +67,11 @@ class Settings(BaseSettings):
     #   postgres://user:password@ec2-xx-xxx-xxx-xx.compute-1.amazonaws.com:5432/d123abc456def7
     DATABASE_URL: str
 
-    # # JWT variables
-    # JWT_SECRET_KEY: str
-    # JWT_ALGORITHM: str
-    # JWT_EXPIRATION: int
-    # BLACKLISTED_TOKENS: list[str] = []
-    #
+    # JWT variables
+    JWT_SECRET_KEY: str
+    JWT_ALGORITHM: str
+    JWT_EXPIRATION: int
+
     # # Email notification variables
     # EMAIL_SENDER: str
     # EMAIL_PASSWORD: str
