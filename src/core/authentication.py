@@ -6,13 +6,14 @@ from src.core.config import settings
 from src.core.security import verify_password
 from src.models.blacklisted_token import BlacklistedToken
 from src.models.user import User
-from fastapi import Depends
-from fastapi import HTTPException, status
+
+from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/auth/login")
+
 
 def authenticate_user(db: Session, username: str, password: str) -> Optional[User]:
     """
@@ -33,6 +34,7 @@ def authenticate_user(db: Session, username: str, password: str) -> Optional[Use
 
     return user
 
+
 def create_access_token(data: dict) -> str:
     """Create a new JWT access token."""
     to_encode = data.copy()
@@ -40,12 +42,11 @@ def create_access_token(data: dict) -> str:
     to_encode.update({"exp": expire})
 
     token = jwt.encode(
-        to_encode,
-        settings.JWT_SECRET_KEY,
-        algorithm=settings.JWT_ALGORITHM
+        to_encode, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM
     )
 
     return token
+
 
 def verify_token(token: str, db: Session) -> dict:
     """Verify a JWT token and return its payload."""
@@ -53,33 +54,32 @@ def verify_token(token: str, db: Session) -> dict:
         if is_token_blacklisted(db, token):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Token has been blacklisted"
+                detail="Token has been blacklisted",
             )
 
         payload = jwt.decode(
-            token,
-            settings.JWT_SECRET_KEY,
-            algorithms=[settings.JWT_ALGORITHM]
+            token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM]
         )
         return payload
 
     except JWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials"
+            detail="Could not validate credentials",
         )
 
 
 def get_current_user(
-        db: Session = Depends(get_db),
-        token: str = Depends(oauth2_scheme)
+    db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)
 ):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials"
+        detail="Could not validate credentials",
     )
     try:
-        payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+        payload = jwt.decode(
+            token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM]
+        )
         user_id: str = payload.get("user_id")
         if user_id is None:
             raise credentials_exception
@@ -94,31 +94,34 @@ def get_current_user(
 
 
 def add_token_to_blacklist(
-        db: Session,
-        token: str,
-        expire_minutes: int = settings.JWT_TOKEN_BLACKLIST_MINUTES
+    db: Session, token: str, expire_minutes: int = settings.JWT_TOKEN_BLACKLIST_MINUTES
 ) -> None:
     """Add a token to the blacklist."""
     expires_at = datetime.now(timezone.utc) + timedelta(minutes=expire_minutes)
-    blacklisted_token = BlacklistedToken(
-        token=token,
-        expires_at=expires_at
-    )
+    blacklisted_token = BlacklistedToken(token=token, expires_at=expires_at)
     db.add(blacklisted_token)
     db.commit()
 
+
 def is_token_blacklisted(db: Session, token: str) -> bool:
     """Check if a token is blacklisted and not expired."""
-    blacklisted = db.query(BlacklistedToken).filter(
-        BlacklistedToken.token == token,
-        BlacklistedToken.expires_at > datetime.now(timezone.utc)
-    ).first()
+    blacklisted = (
+        db.query(BlacklistedToken)
+        .filter(
+            BlacklistedToken.token == token,
+            BlacklistedToken.expires_at > datetime.now(timezone.utc),
+        )
+        .first()
+    )
     return blacklisted is not None
+
 
 def cleanup_expired_tokens(db: Session) -> int:
     """Remove expired tokens from blacklist. Returns number of tokens deleted."""
-    deleted = db.query(BlacklistedToken).filter(
-        BlacklistedToken.expires_at <= datetime.now(timezone.utc)
-    ).delete()
+    deleted = (
+        db.query(BlacklistedToken)
+        .filter(BlacklistedToken.expires_at <= datetime.now(timezone.utc))
+        .delete()
+    )
     db.commit()
     return deleted

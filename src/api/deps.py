@@ -1,7 +1,9 @@
 from typing import Generator
 
-from sqlalchemy.orm import Session
 from database.session import SessionLocal
+
+from sqlalchemy.orm import Session
+
 
 def get_db() -> Generator[Session, None, None]:
     db = SessionLocal()
@@ -9,4 +11,3 @@ def get_db() -> Generator[Session, None, None]:
         yield db
     finally:
         db.close()
-

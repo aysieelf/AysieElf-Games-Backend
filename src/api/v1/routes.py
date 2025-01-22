@@ -1,4 +1,4 @@
-from src.api.v1.endpoints import health, auth
+from src.api.v1.endpoints import auth, health
 
 from fastapi import APIRouter
 
