@@ -71,6 +71,7 @@ class Settings(BaseSettings):
     JWT_SECRET_KEY: str
     JWT_ALGORITHM: str
     JWT_EXPIRATION: int
+    JWT_TOKEN_BLACKLIST_MINUTES: int
 
     # # Email notification variables
     # EMAIL_SENDER: str
