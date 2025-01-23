@@ -4,7 +4,9 @@ atlas-provider-sqlalchemy==0.2.4
 bcrypt==4.2.1
 click==8.1.8
 distlib==0.3.9
+dnspython==2.7.0
 ecdsa==0.19.0
+email_validator==2.2.0
 fastapi==0.115.6
 filelock==3.16.1
 h11==0.14.0
