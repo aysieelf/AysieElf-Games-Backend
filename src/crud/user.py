@@ -1,13 +1,12 @@
 from typing import Optional
 
 from src.core.security import get_password_hash
+from src.crud.utils import validators as v
 from src.models.user import User
 from src.schemas.user import UserCreate, UserReadSingle
-from sqlalchemy.orm import Session
-from src.crud.utils import validators as v
-from fastapi import HTTPException
-from fastapi import status
 
+from fastapi import HTTPException, status
+from sqlalchemy.orm import Session
 
 
 def get_by_id(db: Session, user_id: str) -> Optional[UserReadSingle]:

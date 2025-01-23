@@ -5,14 +5,12 @@ from src.core.authentication import (
     create_access_token,
     oauth2_scheme,
 )
-
-from fastapi import APIRouter, Depends, HTTPException
-from fastapi import status
-from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy.orm import Session
-
 from src.crud.user import create_user
 from src.schemas.user import UserCreate
+
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordRequestForm
+from sqlalchemy.orm import Session
 
 router = APIRouter()
 

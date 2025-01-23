@@ -7,13 +7,12 @@ from src.core.security import verify_password
 from src.crud.user import get_by_id
 from src.models.blacklisted_token import BlacklistedToken
 from src.models.user import User
+from src.schemas.user import UserReadSingle
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
-
-from src.schemas.user import UserReadSingle
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/auth/login")
 

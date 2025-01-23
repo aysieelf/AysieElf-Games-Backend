@@ -1,8 +1,7 @@
 from src.models.user import User
 
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
-from fastapi import status
 
 
 def user_email_exists(db: Session, email: str):
