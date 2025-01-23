@@ -4,6 +4,7 @@ from typing import Optional
 from src.api.deps import get_db
 from src.core.config import settings
 from src.core.security import verify_password
+from src.crud.user import get_by_id
 from src.models.blacklisted_token import BlacklistedToken
 from src.models.user import User
 
@@ -11,6 +12,8 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
+
+from src.schemas.user import UserReadSingle
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/auth/login")
 
@@ -71,11 +74,13 @@ def verify_token(token: str, db: Session) -> dict:
 
 def get_current_user(
     db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)
-):
+) -> UserReadSingle:
+
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
     )
+
     try:
         payload = jwt.decode(
             token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM]
@@ -86,11 +91,8 @@ def get_current_user(
     except JWTError:
         raise credentials_exception
 
-    # TODO: use when get_by_id in crud is implemented
-    # user = get_by_id(db, user_id)
-    # if user is None:
-    #     raise credentials_exception
-    # return user
+    user = get_by_id(db, user_id)
+    return user
 
 
 def add_token_to_blacklist(
