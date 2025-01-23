@@ -6,9 +6,13 @@ from src.core.authentication import (
     oauth2_scheme,
 )
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi import status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
+
+from src.crud.user import create_user
+from src.schemas.user import UserCreate
 
 router = APIRouter()
 
@@ -31,6 +35,11 @@ def login(
         "user_id": str(user.id),
         "role": user.role,
     }
+
+
+@router.post("/register", status_code=status.HTTP_201_CREATED)
+def register(user: UserCreate, db: Session = Depends(get_db)):
+    return create_user(user, db)
 
 
 @router.post("/logout")
