@@ -23,7 +23,7 @@ def login(
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
+            detail="Incorrect username or password.",
         )
 
     access_token = create_access_token(data={"user_id": str(user.id)})

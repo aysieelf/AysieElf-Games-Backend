@@ -36,6 +36,7 @@ class Settings(BaseSettings):
     CORS_ALLOWED_HOSTS: list[str] = [
         "https://aysieelf-games-frontend-7d161a22345f.herokuapp.com/",
         "http://localhost:3000",
+        "http://localhost:5173"
     ]
 
     # Development mode / Production mode
