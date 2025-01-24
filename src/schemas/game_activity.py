@@ -14,4 +14,3 @@ class GameActivityRead(BaseConfig):
     user_id: UUID
     game_id: UUID
     played_at: datetime
-    duration: int  # in seconds
