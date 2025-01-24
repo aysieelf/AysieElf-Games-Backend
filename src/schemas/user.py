@@ -23,7 +23,6 @@ class UserCreate(BaseConfig):
     )
     email: EmailStr
     password: str = Field(min_length=4, max_length=36, examples=["Example123"])
-    role: Role = Role.USER
     avatar: Optional[str] = None
 
     @field_validator("password")
@@ -37,7 +36,7 @@ class UserCreate(BaseConfig):
             raise ValueError(
                 "Password must contain at least "
                 "one uppercase letter, one lowercase letter, "
-                "one number, and must not contain any spaces"
+                "one number, and must not contain any spaces."
             )
         return value
 
@@ -90,6 +89,6 @@ class UserUpdate(BaseConfig):
             raise ValueError(
                 "Password must contain at least "
                 "one uppercase letter, one lowercase letter, "
-                "one number, and must not contain any spaces"
+                "one number, and must not contain any spaces."
             )
         return value
