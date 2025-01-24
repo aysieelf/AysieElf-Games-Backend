@@ -46,6 +46,7 @@ def create_user(user: UserCreate, db: Session) -> UserReadSingle:
         User: The created user object.
     """
     v.user_email_exists(db, user.email)
+    v.user_username_exists(db, user.username)
 
     hashed_password = get_password_hash(user.password)
     db_user = User(
