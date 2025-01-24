@@ -21,6 +21,7 @@ def user_email_exists(db: Session, email: str):
             detail="There is a user registered with this email address.",
         )
 
+
 def user_username_exists(db: Session, username: str):
     """
     Check if a username already exists in the database.
@@ -36,4 +37,4 @@ def user_username_exists(db: Session, username: str):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="There is a user registered with this username.",
-       )
+        )
