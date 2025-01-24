@@ -33,7 +33,6 @@ class User(Base):
         nullable=False,
     )  # can be used for future achievements and badges
     last_login = Column(TIMESTAMP(timezone=True), nullable=True)
-    is_verified = Column(Boolean, nullable=False, default=False)
 
     friends_as_user1 = relationship(
         "Friendship", foreign_keys=[Friendship.user1_id], back_populates="user1"
