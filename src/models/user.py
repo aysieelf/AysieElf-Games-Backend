@@ -4,7 +4,7 @@ from src.models.base import Base
 from src.models.enums import Role
 from src.models.friendship import Friendship
 
-from sqlalchemy import TIMESTAMP, Boolean, Column, Enum, String, event
+from sqlalchemy import TIMESTAMP, Column, Enum, String, event
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
