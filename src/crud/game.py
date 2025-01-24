@@ -1,4 +1,3 @@
-from unicodedata import category
 
 from src.models import Game
 from src.schemas.game import GameReadAll
