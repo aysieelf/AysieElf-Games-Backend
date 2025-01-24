@@ -5,7 +5,7 @@ from src.crud.game import _convert_to_game_read_all
 from src.crud.game_activity import _convert_to_game_activity_read
 from src.crud.utils import validators as v
 from src.models.user import User
-from src.schemas.user import UserCreate, UserReadSingle, UserUpdate, UserReadAll
+from src.schemas.user import UserCreate, UserReadAll, UserReadSingle
 
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
@@ -64,6 +64,7 @@ def create_user(user: UserCreate, db: Session) -> UserReadSingle:
     # )
     return _convert_to_user_read_single(db_user)
 
+
 def update_password(new_password: str, db: Session, current_user: UserReadSingle):
     hash_password = get_password_hash(new_password)
     user = db.query(User).filter(User.id == current_user.id).first()
@@ -80,6 +81,7 @@ def update_password(new_password: str, db: Session, current_user: UserReadSingle
 
     return {"message": "Password updated successfully."}
 
+
 def _convert_to_user_read_single(user: User) -> UserReadSingle:
     return UserReadSingle(
         id=user.id,
@@ -89,10 +91,26 @@ def _convert_to_user_read_single(user: User) -> UserReadSingle:
         role=user.role,
         avatar=user.avatar,
         last_login=user.last_login,
-        favorite_games=[_convert_to_game_read_all(game) for game in user.favorites] if user.favorites else [],
-        friends=[_convert_to_user_read_all(friend) for friend in user.friends] if user.friends else [],
-        game_activities=[_convert_to_game_activity_read(activity) for activity in user.game_activities] if user.game_activities else [],
+        favorite_games=(
+            [_convert_to_game_read_all(game) for game in user.favorites]
+            if user.favorites
+            else []
+        ),
+        friends=(
+            [_convert_to_user_read_all(friend) for friend in user.friends]
+            if user.friends
+            else []
+        ),
+        game_activities=(
+            [
+                _convert_to_game_activity_read(activity)
+                for activity in user.game_activities
+            ]
+            if user.game_activities
+            else []
+        ),
     )
+
 
 def _convert_to_user_read_all(user: User) -> UserReadAll:
     return UserReadAll(
