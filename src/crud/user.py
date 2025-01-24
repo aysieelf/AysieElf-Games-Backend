@@ -1,9 +1,11 @@
 from typing import Optional
 
 from src.core.security import get_password_hash
+from src.crud.game import _convert_to_game_read_all
+from src.crud.game_activity import _convert_to_game_activity_read
 from src.crud.utils import validators as v
 from src.models.user import User
-from src.schemas.user import UserCreate, UserReadSingle, UserUpdate
+from src.schemas.user import UserCreate, UserReadSingle, UserUpdate, UserReadAll
 
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
@@ -29,7 +31,7 @@ def get_by_id(db: Session, user_id: str) -> Optional[UserReadSingle]:
             status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
         )
 
-    return UserReadSingle.model_validate(db_user)
+    return _convert_to_user_read_single(db_user)
 
 
 def create_user(user: UserCreate, db: Session) -> UserReadSingle:
@@ -60,18 +62,7 @@ def create_user(user: UserCreate, db: Session) -> UserReadSingle:
     #     subject="Account Created",
     #     message=f"Your account has been created with email {user.email}",
     # )
-    return UserReadSingle(
-        id=db_user.id,
-        username=db_user.username,
-        slug=db_user.slug,
-        email=db_user.email,
-        role=db_user.role,
-        avatar=db_user.avatar,
-        last_login=db_user.last_login,
-        favorite_games=[],
-        friends=[],
-        game_activities=[],
-    )
+    return _convert_to_user_read_single(db_user)
 
 def update_password(new_password: str, db: Session, current_user: UserReadSingle):
     hash_password = get_password_hash(new_password)
@@ -88,3 +79,28 @@ def update_password(new_password: str, db: Session, current_user: UserReadSingle
     # )
 
     return {"message": "Password updated successfully."}
+
+def _convert_to_user_read_single(user: User) -> UserReadSingle:
+    return UserReadSingle(
+        id=user.id,
+        username=user.username,
+        slug=user.slug,
+        email=user.email,
+        role=user.role,
+        avatar=user.avatar,
+        last_login=user.last_login,
+        favorite_games=[_convert_to_game_read_all(game) for game in user.favorites] if user.favorites else [],
+        friends=[_convert_to_user_read_all(friend) for friend in user.friends] if user.friends else [],
+        game_activities=[_convert_to_game_activity_read(activity) for activity in user.game_activities] if user.game_activities else [],
+    )
+
+def _convert_to_user_read_all(user: User) -> UserReadAll:
+    return UserReadAll(
+        id=user.id,
+        username=user.username,
+        slug=user.slug,
+        email=user.email,
+        role=user.role,
+        avatar=user.avatar,
+        last_login=user.last_login,
+    )
