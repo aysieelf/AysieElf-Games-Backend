@@ -25,7 +25,7 @@ CREATE UNIQUE INDEX "ix_games_slug" ON "games" ("slug");
 -- Create index "ix_games_title" to table: "games"
 CREATE UNIQUE INDEX "ix_games_title" ON "games" ("title");
 -- Create "users" table
-CREATE TABLE "users" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "username" character varying(50) NOT NULL, "slug" character varying(50) NOT NULL, "email" character varying(320) NOT NULL, "password_hash" character varying(60) NOT NULL, "role" "role" NOT NULL, "avatar" character varying(255) NULL, "created_at" timestamptz NOT NULL DEFAULT now(), "last_login" timestamptz NULL, "is_verified" boolean NOT NULL, PRIMARY KEY ("id"));
+CREATE TABLE "users" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "username" character varying(50) NOT NULL, "slug" character varying(50) NOT NULL, "email" character varying(320) NOT NULL, "password_hash" character varying(60) NOT NULL, "role" "role" NOT NULL, "avatar" character varying(255) NULL, "created_at" timestamptz NOT NULL DEFAULT now(), "last_login" timestamptz NULL, PRIMARY KEY ("id"));
 -- Create index "ix_users_email" to table: "users"
 CREATE UNIQUE INDEX "ix_users_email" ON "users" ("email");
 -- Create index "ix_users_id" to table: "users"
