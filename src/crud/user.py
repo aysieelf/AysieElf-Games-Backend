@@ -3,7 +3,7 @@ from typing import Optional
 from src.core.security import get_password_hash
 from src.crud.utils import validators as v
 from src.models.user import User
-from src.schemas.user import UserCreate, UserReadSingle
+from src.schemas.user import UserCreate, UserReadSingle, UserUpdate
 
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
@@ -72,3 +72,19 @@ def create_user(user: UserCreate, db: Session) -> UserReadSingle:
         friends=[],
         game_activities=[],
     )
+
+def update_password(new_password: str, db: Session, current_user: UserReadSingle):
+    hash_password = get_password_hash(new_password)
+    user = db.query(User).filter(User.id == current_user.id).first()
+
+    user.password_hash = hash_password
+    db.commit()
+    db.refresh(user)
+
+    # send_email_notification(
+    #     email=old_email,
+    #     subject="Email Updated",
+    #     message=f"Your password has been changed.",
+    # )
+
+    return {"message": "Password updated successfully."}
