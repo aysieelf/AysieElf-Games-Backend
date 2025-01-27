@@ -4,9 +4,11 @@ from database.session import init_db
 from src.api.v1.routes import api_router
 from src.core.config import Settings, settings
 
-from fastapi import APIRouter, FastAPI
+from fastapi import APIRouter, FastAPI, Request
 from starlette.middleware.cors import CORSMiddleware
 import uvicorn
+
+from src.core.rate_limiter import InMemoryRateLimiter
 
 
 class App:
@@ -22,11 +24,11 @@ class App:
             openapi_url="/openapi.json",
             lifespan=self.lifespan,
         )
-        self.__setup_middlewares(settings=settings)
+        self.__setup_middlewares(settings=settings)  # Първо стандартните middleware-и
+        self.__setup_rate_limiter()                  # После rate limiter middleware
         self.__setup_routes(settings=settings, router=api_router)
 
     def __setup_middlewares(self, settings: Settings):
-        # TODO: To be concretely defined in production
         self.__app.add_middleware(
             CORSMiddleware,
             allow_origins=settings.CORS_ALLOWED_HOSTS,
@@ -34,6 +36,16 @@ class App:
             allow_methods=["*"],
             allow_headers=["*"],
         )
+
+    def __setup_rate_limiter(self):
+        """Initialize the rate limiter"""
+        rate_limiter = InMemoryRateLimiter()
+
+        @self.__app.middleware("http")
+        async def add_rate_limiter(request: Request, call_next):
+            request.state.rate_limiter = rate_limiter
+            response = await call_next(request)
+            return response
 
     def __setup_routes(self, router: APIRouter, settings: Settings):
         self.__app.include_router(router, prefix=settings.API_V1_STR)
