@@ -20,14 +20,11 @@ async def basic_health_check():
     try:
         with engine.connect() as connection:
             connection.execute(text("SELECT 1"))
-        return {
-            "status": "healthy",
-            "timestamp": datetime.now(UTC).isoformat()
-        }
+        return {"status": "healthy", "timestamp": datetime.now(UTC).isoformat()}
     except Exception:
         return {
             "status": "unhealthy",
-            "timestamp": datetime.now(UTC).isoformat()
+            "timestamp": datetime.now(UTC).isoformat(),
         }, status.HTTP_503_SERVICE_UNAVAILABLE
 
 
@@ -46,13 +43,13 @@ async def detailed_health_check() -> Dict[str, Any]:
 
     # Basic system metrics
     memory = psutil.virtual_memory()
-    disk = psutil.disk_usage('/')
+    disk = psutil.disk_usage("/")
 
     return {
         "service": {
             "name": settings.PROJECT_NAME,
             "environment": "development" if settings.DEBUG else "production",
-            "timestamp": datetime.now(UTC).isoformat()
+            "timestamp": datetime.now(UTC).isoformat(),
         },
         "database": {
             "status": db_status,
@@ -60,6 +57,6 @@ async def detailed_health_check() -> Dict[str, Any]:
         "system": {
             "memory_usage_percent": memory.percent,
             "disk_usage_percent": disk.percent,
-            "cpu_usage_percent": psutil.cpu_percent(interval=1)
-        }
+            "cpu_usage_percent": psutil.cpu_percent(interval=1),
+        },
     }

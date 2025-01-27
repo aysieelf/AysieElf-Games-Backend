@@ -1,29 +1,31 @@
-from datetime import timedelta
 
 from src.api.deps import get_db
 from src.core.authentication import (
     add_token_to_blacklist,
     authenticate_user,
     create_access_token,
-    oauth2_scheme, get_current_user, is_token_blacklisted, create_refresh_token,
+    create_refresh_token,
+    get_current_user,
+    is_token_blacklisted,
+    oauth2_scheme,
 )
 from src.core.config import settings
 from src.crud.user import create_user
 from src.schemas.user import UserCreate, UserReadSingle
 
-from fastapi import APIRouter, Depends, HTTPException, status, Request, Response
+from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy.orm import Session
 from jose import jwt
+from sqlalchemy.orm import Session
 
 router = APIRouter()
 
 
 @router.post("/login")
 def login(
-        response: Response,
-        form_data: OAuth2PasswordRequestForm = Depends(),
-        db: Session = Depends(get_db)
+    response: Response,
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db),
 ):
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
@@ -42,7 +44,7 @@ def login(
         httponly=True,
         secure=not settings.DEBUG,
         samesite="lax",
-        max_age=settings.JWT_REFRESH_TOKEN_EXPIRE_MINUTES
+        max_age=settings.JWT_REFRESH_TOKEN_EXPIRE_MINUTES,
     )
 
     return {
@@ -66,10 +68,10 @@ def logout(db: Session = Depends(get_db), current_token: str = Depends(oauth2_sc
 
 @router.post("/refresh")
 async def refresh_token(
-        request: Request,
-        response: Response,
-        db: Session = Depends(get_db),
-        current_user: UserReadSingle = Depends(get_current_user)
+    request: Request,
+    response: Response,
+    db: Session = Depends(get_db),
+    current_user: UserReadSingle = Depends(get_current_user),
 ):
     old_refresh_token = request.cookies.get("refresh_token")
     if not old_refresh_token:
@@ -79,20 +81,18 @@ async def refresh_token(
         jwt.decode(
             old_refresh_token,
             settings.JWT_REFRESH_SECRET_KEY,
-            algorithms=[settings.JWT_ALGORITHM]
+            algorithms=[settings.JWT_ALGORITHM],
         )
 
         if is_token_blacklisted(db, old_refresh_token):
-            raise HTTPException(status_code=401, detail="Refresh token has been revoked")
+            raise HTTPException(
+                status_code=401, detail="Refresh token has been revoked"
+            )
 
         add_token_to_blacklist(db, old_refresh_token)
 
-        new_access_token = create_access_token(
-            data={"user_id": str(current_user.id)}
-        )
-        new_refresh_token = create_refresh_token(
-            data={"user_id": str(current_user.id)}
-        )
+        new_access_token = create_access_token(data={"user_id": str(current_user.id)})
+        new_refresh_token = create_refresh_token(data={"user_id": str(current_user.id)})
 
         response.set_cookie(
             key="refresh_token",
@@ -100,7 +100,7 @@ async def refresh_token(
             httponly=True,
             secure=settings.DEBUG,
             samesite="lax",
-            max_age=settings.JWT_REFRESH_TOKEN_EXPIRE_MINUTES
+            max_age=settings.JWT_REFRESH_TOKEN_EXPIRE_MINUTES,
         )
 
         return {
