@@ -1,4 +1,3 @@
-
 from src.api.deps import get_db
 from src.core.authentication import (
     add_token_to_blacklist,
