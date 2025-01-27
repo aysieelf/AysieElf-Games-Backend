@@ -6,9 +6,10 @@ from src.core.authentication import (
     create_refresh_token,
     get_current_user,
     is_token_blacklisted,
-    oauth2_scheme,
+    oauth2_scheme, ensure_not_authenticated,
 )
 from src.core.config import settings
+from src.core.rate_limiter import rate_limit
 from src.crud.user import create_user
 from src.schemas.user import UserCreate, UserReadSingle
 
@@ -21,7 +22,9 @@ router = APIRouter()
 
 
 @router.post("/login")
+@rate_limit(limit=5, window=900)
 def login(
+    request: Request,
     response: Response,
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db),
@@ -55,7 +58,8 @@ def login(
 
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
-def register(user: UserCreate, db: Session = Depends(get_db)):
+@rate_limit(limit=3, window=3600)
+def register(request: Request, user: UserCreate, db: Session = Depends(get_db), _: None = Depends(ensure_not_authenticated)):
     return create_user(user, db)
 
 
