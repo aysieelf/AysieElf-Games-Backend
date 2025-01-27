@@ -76,7 +76,7 @@ async def refresh_token(
         raise HTTPException(status_code=401, detail="No refresh token provided")
 
     try:
-        payload = jwt.decode(
+        jwt.decode(
             old_refresh_token,
             settings.JWT_REFRESH_SECRET_KEY,
             algorithms=[settings.JWT_ALGORITHM]
