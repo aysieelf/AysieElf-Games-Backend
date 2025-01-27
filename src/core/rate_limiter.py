@@ -5,7 +5,6 @@ from typing import Dict, Tuple
 
 from fastapi import HTTPException, Request, status
 
-
 class InMemoryRateLimiter:
     def __init__(self):
         # Dictionary to store request counts and timestamps
@@ -59,7 +58,7 @@ def rate_limit(limit: int = 100, window: int = 60):
     def decorator(func):
         @wraps(func)
         def wrapper(request: Request, *args, **kwargs):
-            limiter = request.app.state.rate_limiter
+            limiter = request.state.rate_limiter
 
             if limiter.is_rate_limited(request, limit, window):
                 raise HTTPException(
