@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from src.api.deps import get_db
 from src.core.authentication import (
     add_token_to_blacklist,
@@ -19,7 +21,9 @@ router = APIRouter()
 
 @router.post("/login")
 def login(
-    form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
+        response: Response,
+        form_data: OAuth2PasswordRequestForm = Depends(),
+        db: Session = Depends(get_db)
 ):
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
@@ -29,6 +33,18 @@ def login(
         )
 
     access_token = create_access_token(data={"user_id": str(user.id)})
+
+    refresh_token = create_refresh_token(data={"user_id": str(user.id)})
+
+    response.set_cookie(
+        key="refresh_token",
+        value=refresh_token,
+        httponly=True,
+        secure=not settings.DEBUG,
+        samesite="lax",
+        max_age=settings.JWT_REFRESH_TOKEN_EXPIRE_MINUTES
+    )
+
     return {
         "access_token": access_token,
         "token_type": "bearer",
