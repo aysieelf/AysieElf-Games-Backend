@@ -6,7 +6,7 @@ from src.core.authentication import (
     create_refresh_token,
     get_current_user,
     is_token_blacklisted,
-    oauth2_scheme, ensure_not_authenticated,
+    oauth2_scheme,
 )
 from src.core.config import settings
 from src.core.rate_limiter import rate_limit
@@ -15,7 +15,7 @@ from src.schemas.user import UserCreate, UserReadSingle
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
-from jose import jwt
+from jose import jwt, JWTError
 from sqlalchemy.orm import Session
 
 router = APIRouter()
@@ -59,7 +59,7 @@ def login(
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 @rate_limit(limit=3, window=3600)
-def register(request: Request, user: UserCreate, db: Session = Depends(get_db), _: None = Depends(ensure_not_authenticated)):
+def register(request: Request, user: UserCreate, db: Session = Depends(get_db)):
     return create_user(user, db)
 
 
