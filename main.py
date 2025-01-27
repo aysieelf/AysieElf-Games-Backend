@@ -16,6 +16,7 @@ class App:
         self.__app = FastAPI(
             title=settings.PROJECT_NAME,
             version="0.1.0",
+            description="API for AysieElf Games platform",
             docs_url="/docs",
             redoc_url="/redoc",
             openapi_url="/openapi.json",
