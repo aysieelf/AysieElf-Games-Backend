@@ -15,7 +15,7 @@ from src.schemas.user import UserCreate, UserReadSingle
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
-from jose import jwt, JWTError
+from jose import jwt
 from sqlalchemy.orm import Session
 
 router = APIRouter()

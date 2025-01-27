@@ -5,6 +5,7 @@ from typing import Dict, Tuple
 
 from fastapi import HTTPException, Request, status
 
+
 class InMemoryRateLimiter:
     def __init__(self):
         # Dictionary to store request counts and timestamps
@@ -19,7 +20,9 @@ class InMemoryRateLimiter:
         # Otherwise use IP address
         return f"rate_limit:ip:{request.client.host}"
 
-    def is_rate_limited(self, request: Request, limit: int = 100, window: int = 60) -> bool:
+    def is_rate_limited(
+        self, request: Request, limit: int = 100, window: int = 60
+    ) -> bool:
         """
         Check if the request should be rate limited
 
@@ -47,6 +50,7 @@ class InMemoryRateLimiter:
         self.requests[key] = (count + 1, window_start)
         return False
 
+
 def rate_limit(limit: int = 100, window: int = 60):
     """
     Rate limiting decorator for FastAPI endpoints
@@ -55,6 +59,7 @@ def rate_limit(limit: int = 100, window: int = 60):
         limit: Maximum number of requests allowed in the window
         window: Time window in seconds
     """
+
     def decorator(func):
         @wraps(func)
         def wrapper(request: Request, *args, **kwargs):
@@ -67,13 +72,16 @@ def rate_limit(limit: int = 100, window: int = 60):
                         "error": "Too many requests",
                         "limit": limit,
                         "window_seconds": window,
-                        "retry_after": window
-                    }
+                        "retry_after": window,
+                    },
                 )
 
             return func(request=request, *args, **kwargs)
+
         return wrapper
+
     return decorator
+
 
 # Example usage:
 """
