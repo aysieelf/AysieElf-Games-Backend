@@ -140,3 +140,11 @@ def create_refresh_token(data: dict) -> str:
     )
 
     return encoded_jwt
+
+
+def ensure_not_authenticated(token: str = Depends(oauth2_scheme)):
+    if token:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Please logout first."
+        )
