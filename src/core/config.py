@@ -34,7 +34,7 @@ class Settings(BaseSettings):
 
     # Domains allowed to make requests
     CORS_ALLOWED_HOSTS: list[str] = [
-        "https://aysieelf-games-frontend-7d161a22345f.herokuapp.com/",
+        "https://aysieelf-games-frontend-7d161a22345f.herokuapp.com",
         "http://localhost:3000",
         "http://localhost:5173",
     ]
@@ -73,6 +73,8 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str
     JWT_EXPIRATION: int
     JWT_TOKEN_BLACKLIST_MINUTES: int
+    JWT_REFRESH_SECRET_KEY: str
+    JWT_REFRESH_TOKEN_EXPIRE_MINUTES: int
 
     # # Email notification variables
     # EMAIL_SENDER: str
