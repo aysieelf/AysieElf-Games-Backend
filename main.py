@@ -3,12 +3,11 @@ from contextlib import asynccontextmanager
 from database.session import init_db
 from src.api.v1.routes import api_router
 from src.core.config import Settings, settings
+from src.core.rate_limiter import InMemoryRateLimiter
 
 from fastapi import APIRouter, FastAPI, Request
 from starlette.middleware.cors import CORSMiddleware
 import uvicorn
-
-from src.core.rate_limiter import InMemoryRateLimiter
 
 
 class App:
@@ -25,7 +24,7 @@ class App:
             lifespan=self.lifespan,
         )
         self.__setup_middlewares(settings=settings)  # Първо стандартните middleware-и
-        self.__setup_rate_limiter()                  # После rate limiter middleware
+        self.__setup_rate_limiter()  # После rate limiter middleware
         self.__setup_routes(settings=settings, router=api_router)
 
     def __setup_middlewares(self, settings: Settings):
